@@ -36,7 +36,7 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
   };
 
   return (
-    <div className="bg-white rounded shadow p-4">
+    <div className="bg-blue-500 rounded shadow p-4">
       <div role="tablist" aria-label="Code tabs" className="flex gap-2 mb-2">
         <button
           role="tab"
@@ -44,7 +44,7 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
           aria-controls="jsx-panel"
           id="jsx-tab"
           tabIndex={tab === 'jsx' ? 0 : -1}
-          className={`px-3 py-1 rounded ${tab === 'jsx' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+          className={`px-3 py-1 rounded ${tab === 'jsx' ? 'bg-black text-white' : 'bg-yellow-600'}`}
           onClick={() => setTab('jsx')}
           onKeyDown={handleTabKeyDown}
         >
@@ -56,7 +56,7 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
           aria-controls="css-panel"
           id="css-tab"
           tabIndex={tab === 'css' ? 0 : -1}
-          className={`px-3 py-1 rounded ${tab === 'css' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+          className={`px-3 py-1 rounded ${tab === 'css' ? 'bg-black text-white' : 'bg-yellow-600'}`}
           onClick={() => setTab('css')}
           onKeyDown={handleTabKeyDown}
         >
@@ -64,14 +64,14 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
         </button>
         <button
           aria-label="Copy code"
-          className="ml-auto px-3 py-1 bg-gray-100 rounded border hover:bg-gray-200"
+          className="ml-auto px-3 py-1 bg-yellow-600 rounded border hover:bg-yellow-500"
           onClick={handleCopy}
         >
           Copy
         </button>
         <button
           aria-label="Download code"
-          className="px-3 py-1 bg-gray-100 rounded border hover:bg-gray-200"
+          className="px-3 py-1 bg-yellow-600 rounded border hover:bg-yellow-500"
           onClick={handleDownload}
         >
           Download

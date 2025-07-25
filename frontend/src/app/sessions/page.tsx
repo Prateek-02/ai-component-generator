@@ -54,7 +54,7 @@ export default function SessionsPage() {
       )}
       <ul className="space-y-2">
         {sessions.map(session => (
-          <li key={session._id} className="p-3 bg-white rounded shadow flex justify-between items-center">
+          <li key={session._id} className="p-3 bg-blue-500 rounded shadow flex justify-between items-center">
             <Link href={`/sessions/${session._id}`} className="font-medium hover:underline">
               {session.title}
             </Link>
