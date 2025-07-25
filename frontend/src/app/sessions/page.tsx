@@ -1,0 +1,67 @@
+"use client";
+import { useEffect, useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSessionStore } from '@/store/session';
+import Link from 'next/link';
+
+export default function SessionsPage() {
+  const { sessions, loading, error, fetchSessions, createSession } = useSessionStore();
+  const [title, setTitle] = useState('');
+  const [creating, setCreating] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchSessions();
+  }, [fetchSessions]);
+
+  const handleCreate = async (e: FormEvent) => {
+    e.preventDefault();
+    setCreating(true);
+    const session = await createSession(title);
+    setCreating(false);
+    setTitle('');
+    if (session) {
+      router.push(`/sessions/${session._id}`);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Your Sessions</h2>
+      <form onSubmit={handleCreate} className="flex gap-2 mb-6">
+        <input
+          type="text"
+          placeholder="New session title"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          className="px-3 py-2 border rounded w-full"
+          required
+          autoFocus
+        />
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          disabled={creating || !title.trim()}
+          aria-label="Create new session"
+        >
+          {creating ? 'Creating...' : 'Create'}
+        </button>
+      </form>
+      {loading && <p>Loading sessions...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && sessions.length === 0 && (
+        <p className="text-gray-500 text-center">No sessions yet. Create your first session!</p>
+      )}
+      <ul className="space-y-2">
+        {sessions.map(session => (
+          <li key={session._id} className="p-3 bg-white rounded shadow flex justify-between items-center">
+            <Link href={`/sessions/${session._id}`} className="font-medium hover:underline">
+              {session.title}
+            </Link>
+            <span className="text-xs text-gray-500">{new Date(session.updatedAt).toLocaleString()}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+} 
