@@ -25,9 +25,26 @@ export default function SessionsPage() {
     }
   };
 
+  const handleLogout = () => {
+    // Clear token from localStorage or cookie
+    localStorage.removeItem('token'); // Adjust if your key is different
+    router.push('/login');
+  };
+
   return (
-    <div>
+    <div className="relative">
+      {/* Logout button in top-right */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </div>
+
       <h2 className="text-2xl font-bold mb-4">Your Sessions</h2>
+
       <form onSubmit={handleCreate} className="flex gap-2 mb-6">
         <input
           type="text"
@@ -47,6 +64,7 @@ export default function SessionsPage() {
           {creating ? 'Creating...' : 'Create'}
         </button>
       </form>
+
       {loading && <p>Loading sessions...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && sessions.length === 0 && (
@@ -54,7 +72,10 @@ export default function SessionsPage() {
       )}
       <ul className="space-y-2">
         {sessions.map(session => (
-          <li key={session._id} className="p-3 bg-blue-500 rounded shadow flex justify-between items-center">
+          <li
+            key={session._id}
+            className="p-3 bg-blue-500 rounded shadow flex justify-between items-center"
+          >
             <Link href={`/sessions/${session._id}`} className="font-medium hover:underline">
               {session.title}
             </Link>
@@ -64,4 +85,4 @@ export default function SessionsPage() {
       </ul>
     </div>
   );
-} 
+}
