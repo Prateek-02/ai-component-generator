@@ -11,7 +11,7 @@ const morgan = require('morgan');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-['MONGODB_URI', 'JWT_SECRET', 'PORT', 'FRONTEND_URL'].forEach((key) => {
+['MONGODB_URI', 'JWT_SECRET', 'PORT', 'FRONTEND_URL','OPENROUTER_API_KEY'].forEach((key) => {
   if (!process.env[key]) {
     console.error(`❌ Missing required env var: ${key}`);
     process.exit(1);

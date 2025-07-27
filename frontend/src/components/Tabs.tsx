@@ -83,7 +83,7 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
         aria-labelledby="jsx-tab"
         hidden={tab !== 'jsx'}
       >
-        <pre className="bg-gray-100 rounded p-2 overflow-x-auto text-sm">
+        <pre className="bg-gray-100 text-black rounded p-2 overflow-x-auto text-sm">
           <code>{jsx}</code>
         </pre>
       </div>
@@ -93,7 +93,7 @@ const Tabs: React.FC<TabsProps> = ({ jsx, css }) => {
         aria-labelledby="css-tab"
         hidden={tab !== 'css'}
       >
-        <pre className="bg-gray-100 rounded p-2 overflow-x-auto text-sm">
+        <pre className="bg-gray-100 text-black rounded p-2 overflow-x-auto text-sm">
           <code>{css}</code>
         </pre>
       </div>

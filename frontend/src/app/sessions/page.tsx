@@ -58,7 +58,7 @@ export default function SessionsPage() {
             <Link href={`/sessions/${session._id}`} className="font-medium hover:underline">
               {session.title}
             </Link>
-            <span className="text-xs text-gray-500">{new Date(session.updatedAt).toLocaleString()}</span>
+            <span className="text-xs text-black">{new Date(session.updatedAt).toLocaleString()}</span>
           </li>
         ))}
       </ul>

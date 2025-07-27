@@ -1,59 +1,61 @@
-async function generateComponent({ prompt, chatHistory, code, uiState }) {
-  
-const systemPrompt = `
-You are an expert React component generator.
-Given a user prompt, return ONLY a JSON object with two fields:
-"jsx" (the React component code as a string) and "css" (the CSS as a string).
-Do not include any explanations or extra text.
-`;
+require("dotenv").config();
+
+async function generateComponent({ prompt, chatHistory = [], code = '', uiState = {} }) {
+  const model = "meta-llama/llama-3-8b-instruct";
 
   const messages = [
-    { role: 'system', content: systemPrompt },
-    ...chatHistory.map(msg => ({ role: msg.role, content: msg.content })),
-    { role: 'user', content: prompt }
+    {
+      role: "system",
+      content: `You are a helpful assistant. Return only valid React JSX component code and CSS styles. Do not wrap anything in markdown or backticks. Separate JSX and CSS using a clear delimiter like "// ---CSS---".`,
+    },
+    ...chatHistory.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    })),
+    {
+      role: "user",
+      content: `Create a React component based on this prompt: "${prompt}".\n\nCurrent Code: ${code}\n\nUI State: ${JSON.stringify(uiState)}`,
+    },
   ];
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:3000",
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // or 'gpt-4o' if you have paid access
+        model,
         messages,
-        max_tokens: 800,
-        temperature: 0.7
-      })
+        temperature: 0.7,
+        max_tokens: 1200,
+      }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('AI API request failed:', errorText);
-      throw new Error(`AI API request failed with status ${response.status}`);
-    }
-
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
 
-    try {
-      const result = JSON.parse(content);
-      return {
-        jsx: result.jsx || '',
-        css: result.css || ''
-      };
-    } catch (parseError) {
-      console.error('Failed to parse AI response as JSON. Raw content:\n', content);
-      // Fallback: return the raw content as JSX for debugging, empty CSS
-      return {
-        jsx: content || '',
-        css: ''
-      };
+    if (data.error) {
+      console.error("❌ OpenRouter API error:", data.error);
+      throw new Error(data.error.message || "AI generation failed.");
     }
-  } catch (err) {
-    console.error('Error in generateComponent:', err);
-    throw new Error('AI generation failed. Please try again.');
+
+    let output = data.choices?.[0]?.message?.content?.trim();
+
+    // 🔪 Remove accidental backticks or markdown
+    output = output.replace(/```(jsx|css|json)?/gi, '').trim();
+
+    // ✂️ Split JSX and CSS by custom delimiter
+    const [jsxPart, cssPart] = output.split('// ---CSS---');
+
+    return {
+      jsx: (jsxPart || '').trim(),
+      css: (cssPart || '').trim(),
+    };
+  } catch (error) {
+    console.error("❌ AI Generation Error:", error.message);
+    throw new Error("AI generation failed. Please try again.");
   }
 }
 

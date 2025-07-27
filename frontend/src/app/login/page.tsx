@@ -26,8 +26,12 @@ const LoginPage = () => {
     setError(null);
     try {
       const res = await api.post('/auth/login', { email, password });
-      login(res.data.token);
-      setToken(res.data.token);
+      const token = res.data.token;
+  
+      login(token);                      // Store in Zustand
+      setToken(token);                   // Set Axios header
+      localStorage.setItem('token', token);  // ✅ Persist in localStorage
+  
       router.push('/sessions');
     } catch (err: unknown) {
       if (isAxiosError(err)) {
@@ -39,6 +43,7 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+  
 
   return <AuthForm mode="login" onSubmit={handleLogin} loading={loading} error={error} />;
 };
