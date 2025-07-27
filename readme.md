@@ -37,7 +37,7 @@ Coming soon...
 ### 1️⃣ Clone & Install
 ```bash
 git clone https://github.com/Prateek-02/ai-component-generator.git
-cd codepreview
+cd ai-component-generator
 npm install
 
 2️⃣ Setup Environment Variables
