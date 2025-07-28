@@ -14,9 +14,11 @@ CodePreview is a full-stack AI-driven platform that allows users to **generate, 
 
 ---
 
-## 📸 Demo
+## 🚀 Live Demo
 
-Coming soon...
+[![Frontend](https://img.shields.io/badge/Frontend-Vercel-000?logo=vercel&labelColor=000)](https://ai-component-generator-gold.vercel.app)
+[![Backend](https://img.shields.io/badge/Backend-Render-0077CC?logo=render&labelColor=0077CC)](https://ai-component-generator.onrender.com)
+
 
 ---
 
